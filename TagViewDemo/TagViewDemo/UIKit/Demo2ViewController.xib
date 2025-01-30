@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22685"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="Demo2ViewController" customModule="TagViewDemo" customModuleProvider="target">
+            <connections>
+                <outlet property="addTagTextField" destination="wpF-qp-Y8U" id="7Ez-sA-hcq"/>
+                <outlet property="insertTagIndexTextField" destination="zPg-tU-6qS" id="3ew-SL-CJy"/>
+                <outlet property="insertTagTitleTextField" destination="yea-WT-5KF" id="aBn-39-rR4"/>
+                <outlet property="removeTagIndexTextField" destination="zqB-6f-lIW" id="7D3-YG-8AM"/>
+                <outlet property="removeTagTitleTextField" destination="Mfk-fi-9Zn" id="6YB-nr-Bte"/>
+                <outlet property="resultLabel" destination="e3e-En-bOF" id="hjw-fU-Q5G"/>
+                <outlet property="tagListView" destination="FbR-2U-N7g" id="Acv-wA-7nO"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h7E-ag-ziU">
+                    <rect key="frame" x="16" y="75" width="361" height="114"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tag" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Nyo-70-Pck">
+                            <rect key="frame" x="7.9999999999999982" y="8" width="23.333333333333329" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FbR-2U-N7g" customClass="TagListViewUIKit" customModule="TagView">
+                            <rect key="frame" x="8" y="33" width="345" height="61"/>
+                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="61" id="CnH-R8-Jxa"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemGray3Color"/>
+                    <constraints>
+                        <constraint firstItem="Nyo-70-Pck" firstAttribute="top" secondItem="h7E-ag-ziU" secondAttribute="top" constant="8" id="2Ah-hZ-GE7"/>
+                        <constraint firstItem="FbR-2U-N7g" firstAttribute="leading" secondItem="h7E-ag-ziU" secondAttribute="leading" constant="8" id="5ci-na-Nnf"/>
+                        <constraint firstAttribute="trailing" secondItem="FbR-2U-N7g" secondAttribute="trailing" constant="8" id="Dqt-Fo-cjp"/>
+                        <constraint firstAttribute="height" constant="114" id="Xq9-Ez-JsJ"/>
+                        <constraint firstItem="FbR-2U-N7g" firstAttribute="top" secondItem="Nyo-70-Pck" secondAttribute="bottom" constant="8" id="fXO-6s-8og"/>
+                        <constraint firstItem="Nyo-70-Pck" firstAttribute="leading" secondItem="h7E-ag-ziU" secondAttribute="leading" constant="8" id="md1-Wj-JoH"/>
+                    </constraints>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="YPZ-Fq-zCU">
+                    <rect key="frame" x="16" y="197" width="361" height="61.333333333333314"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Result" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="z9w-KV-tBo">
+                            <rect key="frame" x="8" y="8" width="40.333333333333336" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e3e-En-bOF">
+                            <rect key="frame" x="8" y="33" width="345" height="20.333333333333329"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" systemColor="systemRedColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" systemColor="systemTealColor"/>
+                    <constraints>
+                        <constraint firstAttribute="trailing" secondItem="e3e-En-bOF" secondAttribute="trailing" constant="8" id="9R2-9W-lXd"/>
+                        <constraint firstItem="e3e-En-bOF" firstAttribute="top" secondItem="z9w-KV-tBo" secondAttribute="bottom" constant="8" id="MkP-FU-gSu"/>
+                        <constraint firstItem="e3e-En-bOF" firstAttribute="leading" secondItem="YPZ-Fq-zCU" secondAttribute="leading" constant="8" id="XYx-lj-fSb"/>
+                        <constraint firstAttribute="bottom" secondItem="e3e-En-bOF" secondAttribute="bottom" constant="8" id="YHx-eF-hfY"/>
+                        <constraint firstItem="z9w-KV-tBo" firstAttribute="leading" secondItem="YPZ-Fq-zCU" secondAttribute="leading" constant="8" id="hnb-8m-bBU"/>
+                        <constraint firstItem="z9w-KV-tBo" firstAttribute="top" secondItem="YPZ-Fq-zCU" secondAttribute="top" constant="8" id="vPf-1t-SUn"/>
+                    </constraints>
+                </view>
+                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="21" translatesAutoresizingMaskIntoConstraints="NO" id="8as-sj-cne">
+                    <rect key="frame" x="16" y="274.33333333333326" width="361" height="362.66666666666674"/>
+                    <subviews>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="VqW-bU-Afy">
+                            <rect key="frame" x="0.0" y="0.0" width="361" height="196.66666666666666"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="167" translatesAutoresizingMaskIntoConstraints="NO" id="V5t-AK-kNZ">
+                                    <rect key="frame" x="0.0" y="0.0" width="361" height="34.333333333333336"/>
+                                    <subviews>
+                                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter tag title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="wpF-qp-Y8U">
+                                            <rect key="frame" x="0.0" y="0.0" width="107.33333333333333" height="34.333333333333336"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E43-xr-uEj">
+                                            <rect key="frame" x="274.33333333333331" y="0.0" width="86.666666666666686" height="34.333333333333336"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="86.666666666666686" id="ow8-4E-5Z3"/>
+                                            </constraints>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="filled" title="Add Tag"/>
+                                            <connections>
+                                                <action selector="addTagAction:" destination="-1" eventType="touchUpInside" id="JOe-KC-20C"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="41" translatesAutoresizingMaskIntoConstraints="NO" id="scf-Cl-BkH">
+                                    <rect key="frame" x="0.0" y="54.333333333333371" width="361" height="34.333333333333343"/>
+                                    <subviews>
+                                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="tag title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="yea-WT-5KF">
+                                            <rect key="frame" x="0.0" y="0.0" width="76.666666666666671" height="34"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="insert index" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zPg-tU-6qS">
+                                            <rect key="frame" x="117.66666666666666" y="0.0" width="103" height="34"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                        </textField>
+                                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="751" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J0Q-ue-oS8">
+                                            <rect key="frame" x="261.66666666666669" y="0.0" width="99.333333333333314" height="34.333333333333336"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="filled" title="Insert Tag"/>
+                                            <connections>
+                                                <action selector="insertTagAction:" destination="-1" eventType="touchUpInside" id="eYF-DX-Sm2"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="137" translatesAutoresizingMaskIntoConstraints="NO" id="xII-ic-wlT">
+                                    <rect key="frame" x="0.0" y="108.66666666666669" width="361" height="34"/>
+                                    <subviews>
+                                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter tag title" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Mfk-fi-9Zn">
+                                            <rect key="frame" x="0.0" y="0.0" width="107" height="34"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="107" id="Aur-fx-YpT"/>
+                                                <constraint firstAttribute="height" constant="34" id="oys-Mk-yAP"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits"/>
+                                        </textField>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NxU-B7-l2H">
+                                            <rect key="frame" x="244" y="0.0" width="117" height="34"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="filled" title="Remove Tag"/>
+                                            <connections>
+                                                <action selector="removeTagTitleAction:" destination="-1" eventType="touchUpInside" id="Ofw-JW-sdw"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Mfk-fi-9Zn" firstAttribute="centerY" secondItem="NxU-B7-l2H" secondAttribute="centerY" id="fXt-cG-Mn1"/>
+                                    </constraints>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="127" translatesAutoresizingMaskIntoConstraints="NO" id="KAu-Pf-DxY">
+                                    <rect key="frame" x="0.0" y="162.66666666666669" width="361" height="34"/>
+                                    <subviews>
+                                        <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Enter tag index" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="zqB-6f-lIW">
+                                            <rect key="frame" x="0.0" y="0.0" width="117" height="34"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="34" id="10l-b0-fai"/>
+                                                <constraint firstAttribute="width" constant="117" id="koO-j8-7qu"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                            <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                                        </textField>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DbX-wM-hcp">
+                                            <rect key="frame" x="244" y="0.0" width="117" height="34"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="filled" title="Remove Tag"/>
+                                            <connections>
+                                                <action selector="removeTagIndexAction:" destination="-1" eventType="touchUpInside" id="4eI-Bg-6WX"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="zqB-6f-lIW" firstAttribute="centerY" secondItem="DbX-wM-hcp" secondAttribute="centerY" id="Qrz-b2-yKC"/>
+                                    </constraints>
+                                </stackView>
+                            </subviews>
+                        </stackView>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="21" translatesAutoresizingMaskIntoConstraints="NO" id="idO-LT-nSA">
+                            <rect key="frame" x="0.0" y="217.66666666666669" width="361" height="145"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="aTL-6V-82y">
+                                    <rect key="frame" x="0.0" y="0.0" width="361" height="34.333333333333336"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ifF-V6-le3">
+                                            <rect key="frame" x="0.0" y="0.0" width="172.66666666666666" height="34.333333333333336"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="filled" title="All Tag Title"/>
+                                            <connections>
+                                                <action selector="allTagTitleAction:" destination="-1" eventType="touchUpInside" id="GeX-Bd-lQ6"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zDK-oL-kyB">
+                                            <rect key="frame" x="188.66666666666663" y="0.0" width="172.33333333333337" height="34.333333333333336"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="filled" title="Remove All Tag"/>
+                                            <connections>
+                                                <action selector="removeAllTagAction:" destination="-1" eventType="touchUpInside" id="4PE-Uo-btv"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" spacing="15" translatesAutoresizingMaskIntoConstraints="NO" id="KMy-iP-0zx">
+                                    <rect key="frame" x="0.0" y="55.333333333333371" width="361" height="34.333333333333343"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UKS-gR-VJy">
+                                            <rect key="frame" x="0.0" y="0.0" width="173" height="34.333333333333336"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="filled" title="Total Of Tag"/>
+                                            <connections>
+                                                <action selector="totalOfTagAction:" destination="-1" eventType="touchUpInside" id="9FT-jP-Anp"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="d4r-MX-XL2">
+                                            <rect key="frame" x="188" y="0.0" width="173" height="34.333333333333336"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="filled" title="Total Of Row"/>
+                                            <connections>
+                                                <action selector="totalOfRowAction:" destination="-1" eventType="touchUpInside" id="F9q-5E-08g"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="jiT-fp-vyA">
+                                    <rect key="frame" x="0.0" y="110.66666666666663" width="361" height="34.333333333333343"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Zf-7H-FbY">
+                                            <rect key="frame" x="0.0" y="0.0" width="172.66666666666666" height="34.333333333333336"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="filled" title="Selected Tag Index"/>
+                                            <connections>
+                                                <action selector="selectedTagIndexAction:" destination="-1" eventType="touchUpInside" id="luB-mO-Wcn"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="AoY-aX-9va">
+                                            <rect key="frame" x="188.66666666666663" y="0.0" width="172.33333333333337" height="34.333333333333336"/>
+                                            <state key="normal" title="Button"/>
+                                            <buttonConfiguration key="configuration" style="filled" title="Selected Tag Title"/>
+                                            <connections>
+                                                <action selector="selectedTagTitleAction:" destination="-1" eventType="touchUpInside" id="Awz-bh-pis"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                </stackView>
+                            </subviews>
+                        </stackView>
+                    </subviews>
+                </stackView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="8as-sj-cne" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="A39-jG-6Vv"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="h7E-ag-ziU" secondAttribute="trailing" constant="16" id="CKI-l1-LZL"/>
+                <constraint firstItem="YPZ-Fq-zCU" firstAttribute="top" secondItem="h7E-ag-ziU" secondAttribute="bottom" constant="8" id="LEl-M0-en1"/>
+                <constraint firstItem="h7E-ag-ziU" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="YYI-4j-uxY"/>
+                <constraint firstItem="8as-sj-cne" firstAttribute="top" secondItem="YPZ-Fq-zCU" secondAttribute="bottom" constant="16" id="cHF-U2-hUh"/>
+                <constraint firstItem="h7E-ag-ziU" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="eVG-H5-dr7"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="YPZ-Fq-zCU" secondAttribute="trailing" constant="16" id="eqy-QW-9W3"/>
+                <constraint firstItem="YPZ-Fq-zCU" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="16" id="t04-e2-cRM"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="8as-sj-cne" secondAttribute="trailing" constant="16" id="vpP-3x-tCa"/>
+            </constraints>
+            <point key="canvasLocation" x="130.53435114503816" y="-32.394366197183103"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray3Color">
+            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemTealColor">
+            <color red="0.18823529410000001" green="0.69019607839999997" blue="0.78039215689999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>
