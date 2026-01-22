@@ -2,6 +2,12 @@
 
 [English](README.md) | [繁體中文](README_TW.md)
 
+I created this package because my previous company needed to replace an old third-party tag view library, so after discussion we decided to write one for own using. Since the project was still based on UIKit architecture but I wanted to practice SwiftUI, I created this tag view package that works seamlessly with both frameworks.
+
+Originally built for iOS 16, I have now upgraded it to use the new Layout API for iOS 17+. (2026/1/22)
+
+> **Note**: There are known stability issues with some UIKit components, especially when embedding `tag list view` inside `UITableViewCell`, which may cause layout glitches. Please double-check if you plan to use it this way. However, if your page is written in pure SwiftUI and bridged to UIKit using `UIHostingController`, you shouldn't encounter these issues (maybe
+
 **MNTagView** is a modern Tag View framework built on the power of SwiftUI, designed specifically for **iOS 17+**. It leverages the latest Layout protocol to deliver high-performance flow layouts while providing a highly unified and easy-to-use API for both SwiftUI and UIKit.
 
 ## ✨ Features
