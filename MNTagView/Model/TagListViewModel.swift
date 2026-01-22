@@ -18,19 +18,14 @@ public enum TagAlignment: String, CaseIterable {
     case leading
     case center
     case trailing
-    // case justified // Justified is complex in Flow Layout (stretching items?). 
-    // Usually Flow Layout "Justified" means "Space Between".
-    // Let's stick to standard alignments first unless requested specifically as "Space Between".
-    // The user asked for "optimization", adding Justified is a feature request I proposed.
-    // Let's implement it as "Space Between" logic if selected.
-    // But SwiftUI's HorizontalAlignment doesn't have it.
-    // So I will create this custom Enum.
 }
 
 @MainActor
 public class TagListViewModel: ObservableObject {
     
     public init() {}
+    
+    private var isBatchUpdating = false
     
     weak var delegate: TagViewDelegate? {
         didSet {
@@ -61,13 +56,6 @@ public class TagListViewModel: ObservableObject {
     
     @Published public var spacing: CGFloat = 8
     
-    // Changed from HorizontalAlignment to custom TagAlignment for extensibility (though mapped for now)
-    // To maintain backward compatibility, I should keep using HorizontalAlignment in the public API 
-    // OR migrate.
-    // Migration might be annoying for user.
-    // I will keep HorizontalAlignment for now but internally I could handle more.
-    // Actually, let's Stick to HorizontalAlignment to strictly follow "Simple to use".
-    // Adding Justified might complicate "Simple". I will skip Justified for now to focus on Code Quality.
     @Published public var alignment: HorizontalAlignment = .leading
     
     @Published public var showScrollIndicator = true
@@ -75,62 +63,66 @@ public class TagListViewModel: ObservableObject {
     @Published public var viewPadding: MNEdgeInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0)
     
     @Published public var textColor: UIColor = .white {
-        didSet { tags.forEach { $0.model.textColor = textColor } }
+        didSet { if !isBatchUpdating { tags.forEach { $0.model.textColor = textColor } } }
     }
     
     @Published public var textFontName: String = "" {
-        didSet { tags.forEach { $0.model.textFontName = textFontName } }
+        didSet { if !isBatchUpdating { tags.forEach { $0.model.textFontName = textFontName } } }
     }
     
     @Published public var textSize: CGFloat = 12 {
-        didSet { tags.forEach { $0.model.textSize = textSize } }
+        didSet { if !isBatchUpdating { tags.forEach { $0.model.textSize = textSize } } }
     }
     
     @Published public var tagBackgroundColor: [UIColor] = [] {
-        didSet { tags.forEach { $0.model.tagBackgroundColor = tagBackgroundColor } }
+        didSet { if !isBatchUpdating { tags.forEach { $0.model.tagBackgroundColor = tagBackgroundColor } } }
     }
     
     @Published public var selectedTextColor: UIColor = .white {
-        didSet { tags.forEach { $0.model.selectedTextColor = selectedTextColor } }
+        didSet { if !isBatchUpdating { tags.forEach { $0.model.selectedTextColor = selectedTextColor } } }
     }
     
     @Published public var selectedBorderColor: UIColor = .clear {
-        didSet { tags.forEach { $0.model.selectedBorderColor = selectedBorderColor } }
+        didSet { if !isBatchUpdating { tags.forEach { $0.model.selectedBorderColor = selectedBorderColor } } }
     }
     
     @Published public var selectedBackgroundColor: UIColor = .blue {
-        didSet { tags.forEach { $0.model.selectedBackgroundColor = selectedBackgroundColor } }
+        didSet { if !isBatchUpdating { tags.forEach { $0.model.selectedBackgroundColor = selectedBackgroundColor } } }
     }
     
     @Published public var cornerRadius: CGFloat = 0 {
-        didSet { tags.forEach { $0.model.cornerRadius = cornerRadius } }
+        didSet { if !isBatchUpdating { tags.forEach { $0.model.cornerRadius = cornerRadius } } }
     }
 
     @Published public var tagPadding: MNEdgeInsets = .init(top: 4, leading: 4, bottom: 4, trailing: 4) {
-        didSet { tags.forEach { $0.model.tagPadding = tagPadding } }
+        didSet { if !isBatchUpdating { tags.forEach { $0.model.tagPadding = tagPadding } } }
     }
 
     @Published public var borderWidth: CGFloat = 0 {
-        didSet { tags.forEach { $0.model.borderWidth = borderWidth } }
+        didSet { if !isBatchUpdating { tags.forEach { $0.model.borderWidth = borderWidth } } }
     }
     
     @Published public var borderColor: [UIColor] = [] {
-        didSet { tags.forEach { $0.model.borderColor = borderColor } }
+        didSet { if !isBatchUpdating { tags.forEach { $0.model.borderColor = borderColor } } }
     }
     
     @Published public var removeButtonEnable: Bool = false {
-        didSet { tags.forEach { $0.model.removeButtonEnable = removeButtonEnable } }
+        didSet { if !isBatchUpdating { tags.forEach { $0.model.removeButtonEnable = removeButtonEnable } } }
     }
     
     @Published public var removeButtonIconSize: CGSize = CGSize(width: 10, height: 10) {
-        didSet { tags.forEach { $0.model.removeButtonIconSize = removeButtonIconSize } }
+        didSet { if !isBatchUpdating { tags.forEach { $0.model.removeButtonIconSize = removeButtonIconSize } } }
     }
     
     @Published public var removeButtonIconColor: UIColor = .red {
-        didSet { tags.forEach { $0.model.removeButtonIconColor = removeButtonIconColor } }
+        didSet { if !isBatchUpdating { tags.forEach { $0.model.removeButtonIconColor = removeButtonIconColor } } }
     }
 
     public func setConfig(_ config: MNTagConfig) {
+        // Start batch update mode to suppress individual property observers
+        isBatchUpdating = true
+        defer { isBatchUpdating = false }
+        
         self.cornerRadius = config.cornerRadius
         self.textColor = config.textColor
         self.textFontName = config.textFontName
@@ -145,6 +137,11 @@ public class TagListViewModel: ObservableObject {
         self.removeButtonEnable = config.removeButtonEnable
         self.removeButtonIconSize = config.removeButtonIconSize
         self.removeButtonIconColor = config.removeButtonIconColor
+        
+        // Single pass update for all tags
+        tags.forEach { tag in
+            applyStyle(to: tag.model)
+        }
     }
     
     func createTag(title: String) -> TagSubView {
@@ -152,6 +149,11 @@ public class TagListViewModel: ObservableObject {
         model.delegate = delegate
         model.onTagPressed = onTagPressed
         model.onRemoveButtonPressed = onRemoveButtonPressed
+        applyStyle(to: model)
+        return TagSubView(model: model)
+    }
+    
+    private func applyStyle(to model: TagViewModel) {
         model.cornerRadius = cornerRadius
         model.textColor = textColor
         model.borderWidth = borderWidth
@@ -165,6 +167,5 @@ public class TagListViewModel: ObservableObject {
         model.removeButtonEnable = removeButtonEnable
         model.removeButtonIconSize = removeButtonIconSize
         model.removeButtonIconColor = removeButtonIconColor
-        return TagSubView(model: model)
     }
 }
