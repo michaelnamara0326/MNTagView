@@ -25,7 +25,6 @@ public protocol TagListViewProtocol {
     func getSelectedTagsTitle() -> [String]
     func getAllTags() -> [TagSubView]
     func getAllTagsTitle() -> [String]
-    func getTotalOfRow() -> Int
     func getTotalOfTag() -> Int
 }
 
@@ -93,10 +92,6 @@ extension TagListViewProtocol {
     
     public func getAllTagsTitle() -> [String] {
         return model.tags.map { $0.model.title }
-    }
-    
-    public func getTotalOfRow() -> Int {
-        return model.totalOfRow
     }
     
     public func getTotalOfTag() -> Int {

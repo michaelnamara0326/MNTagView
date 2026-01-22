@@ -1,2 +1,170 @@
 # MNTagView
-This is an TagView framework based on SwiftUI and usage adopt in both UIKit and SwiftUI
+
+[English](README.md) | [中文](README_TW.md)
+
+**MNTagView** is a modern Tag View framework built on the power of SwiftUI, designed specifically for **iOS 17+**. It leverages the latest Layout protocol to deliver high-performance flow layouts while providing a highly unified and easy-to-use API for both SwiftUI and UIKit.
+
+## ✨ Features
+
+*   **⚡️ Built for iOS 17+**: Utilizes SwiftUI's modern `Layout` protocol for superior performance and stable flow layouts.
+*   **📱 Seamless Cross-Platform Support**:
+    *   **SwiftUI**: Supports native `Binding` for reactive data flow, adhering to the "Single Source of Truth" principle.
+    *   **UIKit**: Provides a complete property facade, making it feel just like a native `UIView`.
+*   **🎨 Highly Customizable**:
+    *   Customizable corner radius, borders, font size, and font name.
+    *   Supports solid background colors and gradients.
+    *   Flexible padding configuration using `MNEdgeInsets` for cross-platform compatibility.
+*   **🛠 Flexible Layout**:
+    *   Supports **Vertical**, **Horizontal** scrolling, or **None** (auto-expanding).
+    *   Supports **Leading**, **Center**, and **Trailing** alignment.
+*   **👆 Interactive**: Built-in support for tap selection and remove buttons.
+
+## 📦 Installation
+
+### Swift Package Manager (SPM)
+
+In Xcode, select `File` > `Add Packages...` and enter the following URL:
+
+```
+https://github.com/michaelnamara0326/MNTagView.git
+```
+
+> **Note**: This package requires **iOS 17.0** or later.
+
+## 🚀 Usage
+
+### SwiftUI
+
+MNTagView offers a SwiftUI-idiomatic API with `Binding` support for automatic data synchronization.
+
+```swift
+import SwiftUI
+import MNTagView
+
+struct ContentView: View {
+    @State private var tags = ["SwiftUI", "iOS", "Apple", "WWDC"]
+    
+    var body: some View {
+        TagListViewSwiftUI(tags: $tags)
+            // 1. Layout Configuration
+            .scrollAxis(.vertical)
+            .alignment(.leading)
+            .spacing(10)
+            
+            // 2. Styling
+            .tagCornerRadius(12)
+            .tagBackgroundColor(.blue)
+            .tagTextColor(.white)
+            .viewPadding(MNEdgeInsets(16)) // Unified MNEdgeInsets
+            
+            // 3. Interactions
+            .onTagPressed { tag in
+                print("Pressed: \(tag.model.title)")
+                tag.model.isSelected.toggle()
+            }
+            .onRemoveTag { tag in
+                // Data is automatically removed from the 'tags' array when using Binding
+                print("Removed: \(tag.model.title)")
+            }
+    }
+}
+```
+
+### UIKit
+
+In UIKit, you no longer need to deal with complex ViewModels. We provide a direct property interface.
+
+```swift
+import UIKit
+import MNTagView
+
+class ViewController: UIViewController {
+    
+    let tagView = TagListViewUIKit()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        view.addSubview(tagView)
+        tagView.frame = CGRect(x: 0, y: 100, width: 300, height: 200)
+        
+        // 1. Set Data
+        tagView.tags = ["UIKit", "Interface", "Legacy", "Modern"]
+        
+        // 2. Set Delegate
+        tagView.delegate = self
+        
+        // 3. Styling (Direct properties)
+        tagView.scrollAxis = .vertical
+        tagView.alignment = .leading
+        tagView.spacing = 8
+        tagView.tagBackgroundColor = .systemBlue
+        tagView.textColor = .white
+        tagView.cornerRadius = 8
+        
+        // Cross-platform padding
+        tagView.tagPadding = MNEdgeInsets(horizontal: 12, vertical: 6)
+        
+        // Enable Remove Button
+        tagView.isRemoveButtonEnabled = true
+    }
+}
+
+extension ViewController: TagViewDelegate {
+    func tagPressed(_ tag: TagSubView) {
+        print("Tag selected: \(tag.model.title)")
+        tag.model.isSelected.toggle()
+    }
+    
+    func removeButtonPressed(_ tag: TagSubView) {
+        print("Remove requested for: \(tag.model.title)")
+        // In UIKit, you must manually call remove to update the UI if managing data manually
+        tagView.removeTagView(tag: tag) 
+    }
+}
+```
+
+## ⚙️ Advanced Configuration (MNTagConfig)
+
+To manage styles centrally, you can use `MNTagConfig` to apply multiple settings at once:
+
+```swift
+var config = MNTagConfig()
+config.cornerRadius = 20
+config.textSize = 14
+config.textColor = .white
+config.tagBackgroundColor = [.systemPurple]
+config.tagPadding = MNEdgeInsets(10) // Unified padding
+
+// SwiftUI
+TagListViewSwiftUI(tags: $tags)
+    .setConfig(config)
+
+// UIKit
+tagView.setConfig(config)
+```
+
+## 📐 MNEdgeInsets
+
+To unify padding configuration across both platforms, we introduced `MNEdgeInsets`. It converts seamlessly to SwiftUI's `EdgeInsets` or UIKit's `UIEdgeInsets`.
+
+```swift
+// Uniform
+let insets = MNEdgeInsets(10)
+
+// Horizontal / Vertical
+let insets = MNEdgeInsets(horizontal: 16, vertical: 8)
+
+// Custom
+let insets = MNEdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10)
+```
+
+## 📱 Demo App
+
+This project includes a comprehensive Demo App (in the `TagViewDemo` folder) showcasing:
+*   Complete implementation examples for both SwiftUI and UIKit.
+*   **Interactive Control Panel**: Real-time adjustment of alignment, spacing, corner radius, colors, etc.
+*   **Pinned Preview**: See changes instantly as you tweak settings.
+
+## 📄 License
+
+MNTagView is released under the MIT license. See LICENSE for details.

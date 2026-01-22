@@ -5,7 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "MNTagView",
-    platforms: [.iOS(.v16)],
+    platforms: [.iOS(.v17)],
     products: [
         .library(name: "MNTagView",
                  targets: ["MNTagView"]),
