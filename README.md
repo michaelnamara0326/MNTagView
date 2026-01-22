@@ -1,6 +1,6 @@
 # MNTagView
 
-[English](README.md) | [中文](README_CN.md)
+[English](README.md) | [中文](README_TW.md)
 
 **MNTagView** is a modern Tag View framework built on the power of SwiftUI, designed specifically for **iOS 17+**. It leverages the latest Layout protocol to deliver high-performance flow layouts while providing a highly unified and easy-to-use API for both SwiftUI and UIKit.
 
