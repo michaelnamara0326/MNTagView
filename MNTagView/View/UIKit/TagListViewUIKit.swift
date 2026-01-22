@@ -71,7 +71,7 @@ public class TagListViewUIKit: UIView, TagListViewProtocol {
         set { model.scrollAxis = newValue }
     }
     
-    public var alignment: HorizontalAlignment {
+    public var alignment: TagListAlignment {
         get { model.alignment }
         set { model.alignment = newValue }
     }
@@ -81,9 +81,9 @@ public class TagListViewUIKit: UIView, TagListViewProtocol {
         set { model.spacing = newValue }
     }
     
-    public var viewPadding: MNEdgeInsets {
-        get { model.viewPadding }
-        set { model.viewPadding = newValue }
+    public var viewPadding: UIEdgeInsets {
+        get { model.viewPadding.uiEdgeInsets }
+        set { model.viewPadding = MNEdgeInsets(top: newValue.top, leading: newValue.left, bottom: newValue.bottom, trailing: newValue.right) }
     }
     
     public var limitScrollHeight: CGFloat {

@@ -14,7 +14,7 @@ struct SwiftUIDemoView: View {
     
     // Layout Controls
     @State private var scrollAxis: TagListScrollAxis = .vertical
-    @State private var alignmentOption: AlignmentOption = .leading
+    @State private var alignmentOption: TagListAlignment = .leading
     @State private var spacing: CGFloat = 8
     @State private var viewPadding: CGFloat = 10
     
@@ -48,23 +48,6 @@ struct SwiftUIDemoView: View {
     @State private var isRemoveExpanded: Bool = false
     @State private var isDataExpanded: Bool = false
     
-    // Wrapper enum to make HorizontalAlignment Hashable/Selectable
-    enum AlignmentOption: String, CaseIterable, Identifiable {
-        case leading = "Leading"
-        case center = "Center"
-        case trailing = "Trailing"
-        
-        var id: String { rawValue }
-        
-        var value: HorizontalAlignment {
-            switch self {
-            case .leading: return .leading
-            case .center: return .center
-            case .trailing: return .trailing
-            }
-        }
-    }
-    
     var body: some View {
         ScrollView(showsIndicators: false) {
             LazyVStack(spacing: 20, pinnedViews: [.sectionHeaders]) {
@@ -81,9 +64,9 @@ struct SwiftUIDemoView: View {
                         
                         TagListViewSwiftUI(tags: $tags)
                             .scrollAxis(scrollAxis)
-                            .alignment(alignmentOption.value)
+                            .alignment(alignmentOption)
                             .spacing(spacing)
-                            .viewPadding(MNEdgeInsets(top: viewPadding, leading: viewPadding, bottom: viewPadding, trailing: viewPadding))
+                            .viewPadding(top: viewPadding, leading: viewPadding, bottom: viewPadding, trailing: viewPadding)
                             // Unified Config
                             .setConfig(MNTagConfig()
                                 .updated {
@@ -135,7 +118,7 @@ struct SwiftUIDemoView: View {
                             }.pickerStyle(.segmented)
                             
                             Picker("Alignment", selection: $alignmentOption) {
-                                ForEach(AlignmentOption.allCases) { option in
+                                ForEach(TagListAlignment.allCases, id: \.self) { option in
                                     Text(option.rawValue).tag(option)
                                 }
                             }.pickerStyle(.segmented)

@@ -133,7 +133,7 @@ class UIKitDemoViewController: UIViewController {
                 self?.tagView.scrollAxis = axes[index]
             }
             self.addSegmentedControl(to: stack, title: "Alignment", items: ["Leading", "Center", "Trailing"], index: 0) { [weak self] index in
-                let aligns: [HorizontalAlignment] = [.leading, .center, .trailing]
+                let aligns: [TagListAlignment] = [.leading, .center, .trailing]
                 self?.tagView.alignment = aligns[index]
             }
             self.addSlider(to: stack, title: "Spacing", min: 0, max: 30, value: 8) { [weak self] val in
@@ -141,7 +141,7 @@ class UIKitDemoViewController: UIViewController {
             }
             self.addSlider(to: stack, title: "View Padding", min: 0, max: 50, value: 0) { [weak self] val in
                  let p = CGFloat(val)
-                 self?.tagView.viewPadding = MNEdgeInsets(p)
+                 self?.tagView.viewPadding = UIEdgeInsets(top: p, left: p, bottom: p, right: p)
             }
         }
         

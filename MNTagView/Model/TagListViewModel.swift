@@ -14,10 +14,18 @@ public enum TagListScrollAxis: CaseIterable {
     case none
 }
 
-public enum TagAlignment: String, CaseIterable {
+public enum TagListAlignment: String, CaseIterable {
     case leading
     case center
     case trailing
+    
+    var value: HorizontalAlignment {
+        switch self {
+        case .leading: return .leading
+        case .center: return .center
+        case .trailing: return .trailing
+        }
+    }
 }
 
 @MainActor
@@ -56,7 +64,7 @@ public class TagListViewModel: ObservableObject {
     
     @Published public var spacing: CGFloat = 8
     
-    @Published public var alignment: HorizontalAlignment = .leading
+    @Published public var alignment: TagListAlignment = .leading
     
     @Published public var showScrollIndicator = true
     

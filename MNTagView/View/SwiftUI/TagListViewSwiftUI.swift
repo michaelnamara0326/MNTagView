@@ -96,7 +96,7 @@ public struct TagListViewSwiftUI: View, TagListViewProtocol {
     }
     
     private var verticalContent: some View {
-        TagLayout(alignment: model.alignment, spacing: model.spacing) {
+        TagLayout(alignment: model.alignment.value, spacing: model.spacing) {
             ForEach(model.tags, id: \.self) { tagView in
                 tagView
             }
@@ -155,14 +155,14 @@ extension TagListViewSwiftUI {
         return self
     }
     
-    public func alignment(_ alignment: HorizontalAlignment) -> Self {
+    public func alignment(_ alignment: TagListAlignment) -> Self {
         model.alignment = alignment
         return self
     }
     
     /// Unified Padding Modifier
-    public func viewPadding(_ padding: MNEdgeInsets) -> Self {
-        model.viewPadding = padding
+    public func viewPadding(top: CGFloat = 0, leading: CGFloat = 0, bottom: CGFloat = 0, trailing: CGFloat = 0) -> Self {
+        model.viewPadding = MNEdgeInsets(top: top, leading: leading, bottom: bottom, trailing: trailing)
         return self
     }
     
@@ -247,7 +247,7 @@ extension TagListViewSwiftUI {
                         textSize: CGFloat = 12,
                         textColor: Color = .white,
                         spacing: CGFloat = 8,
-                        alignment: HorizontalAlignment = .leading,
+                        alignment: TagListAlignment = .leading,
                         tagBackgroundColor: Color = .gray,
                         selectedTextColor: Color = .white,
                         selectedBorderColor: Color = .clear,
