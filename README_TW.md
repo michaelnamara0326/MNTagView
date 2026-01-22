@@ -2,6 +2,18 @@
 
 [English](README.md) | [繁體中文](README_TW.md)
 
+## 前言
+當初會寫這個套件，是因為前專案需要捨棄舊有的第三方 Tag View 套件，與團隊討論後決定不另行尋找替代套件，自行開發篆刻。  
+當時專案還是 UIKit 架構，但我希望能藉此練習 SwiftUI，於是為了支援UIKit，就開發了這個能同時支援兩個框架的 Tag View 套件  
+原本是針對 iOS 16 開發的，因個人專案需要，我改使用了 iOS 17 最新的 Layout API 重新製作並優化這個套件（2026/1/22）
+
+> **注意事項**：  
+目前就我個人已知的經驗在 UIKit 元件中使用可能會稍微不穩定，特別是將 Tag List View 內嵌在 `UITableViewCell` 中時，可能會發生跑版錯誤，請欲使用者自行多測試檢查。  
+不過，如果你是使用純 SwiftUI 撰寫整個頁面或某個功能，然後透過 `UIHostingController` 橋接至 UIKit 頁面上的話，則比較不會遇到這個問題（應該 
+
+---
+
+
 **MNTagView** 是一個基於 SwiftUI 強大功能構建的現代化標籤列表 (Tag View) 套件，專為 iOS 17+ 設計。它利用了最新的 Layout 協議來提供高效能的自動換行佈局，同時為 SwiftUI 和 UIKit 提供了高度統一且易於使用的 API。
 
 ## ✨ 特色
