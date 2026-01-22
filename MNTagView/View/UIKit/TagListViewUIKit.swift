@@ -59,7 +59,10 @@ public class TagListViewUIKit: UIView, TagListViewProtocol {
     /// The tags currently displayed. Setting this replaces all tags.
     public var tags: [String] {
         get { model.tags.map { $0.model.title } }
-        set { addTags(titles: newValue) }
+        set {
+            removeAllTag()
+            addTags(titles: newValue)
+        }
     }
     
     // MARK: - Layout
