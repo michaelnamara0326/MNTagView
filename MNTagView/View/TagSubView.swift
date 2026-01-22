@@ -30,8 +30,10 @@ public struct TagSubView: View {
     @ViewBuilder
     private var tag: some View {
         let isEnabled = model.removeButtonEnable
-        Button(action: pressedTag) {
-            HStack {
+        
+        HStack(spacing: 8) {
+            // Tag Content (Image + Title)
+            HStack(spacing: 4) {
                 if let image = model.customImage {
                     Image(uiImage: image)
                         .resizable()
@@ -42,28 +44,30 @@ public struct TagSubView: View {
                 Text(model.title)
                     .font(.custom(model.textFontName, size: model.textSize))
                     .foregroundColor(model.isSelected ? Color(model.selectedTextColor) : Color(model.textColor))
-                
-                if isEnabled {
-                    Button(action: pressedRemoveButton) {
-                        Image(systemName: "xmark")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .foregroundColor(Color(model.removeButtonIconColor))
-                            .frame(width: model.removeButtonIconSize.width,
-                                   height: model.removeButtonIconSize.height)
-                    }
-                }
             }
-            .padding(model.tagPadding.swiftUIEdgeInsets)
-            .background(getBackgroundColor())
-            .overlay(
-                RoundedRectangle(cornerRadius: model.cornerRadius)
-                    .inset(by: 0.5)
-                    .stroke(getStrokeColor(), lineWidth: model.borderWidth)
-            )
-            .cornerRadius(model.cornerRadius)
+            .contentShape(Rectangle())
+            .onTapGesture(perform: pressedTag)
+            
+            // Remove Button
+            if isEnabled {
+                Image(systemName: "xmark")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .foregroundColor(Color(model.removeButtonIconColor))
+                    .frame(width: model.removeButtonIconSize.width,
+                           height: model.removeButtonIconSize.height)
+                    .contentShape(Rectangle())
+                    .onTapGesture(perform: pressedRemoveButton)
+            }
         }
-        .buttonStyle(NoTapAnimationStyle())
+        .padding(model.tagPadding.swiftUIEdgeInsets)
+        .background(getBackgroundColor())
+        .overlay(
+            RoundedRectangle(cornerRadius: model.cornerRadius)
+                .inset(by: 0.5)
+                .stroke(getStrokeColor(), lineWidth: model.borderWidth)
+        )
+        .cornerRadius(model.cornerRadius)
     }
     
     private func pressedTag() {
@@ -83,17 +87,11 @@ public struct TagSubView: View {
     }
     
     private func getBackgroundColor() -> some View {
-        return LinearGradient(
-            colors: model.isSelected ? [Color(model.selectedBackgroundColor)] : model.tagBackgroundColor.map { Color($0) },
-            startPoint: .bottomLeading,
-            endPoint: .topTrailing)
+        return model.isSelected ? Color(model.selectedBackgroundColor) : Color(model.tagBackgroundColor)
     }
     
     private func getStrokeColor() -> some ShapeStyle {
-        return LinearGradient(
-            colors: model.isSelected ? [Color(model.selectedBorderColor)] : model.borderColor.map { Color($0) },
-            startPoint: .bottomLeading,
-            endPoint: .topTrailing)
+        return model.isSelected ? Color(model.selectedBorderColor) : Color(model.borderColor)
     }
 }
 
@@ -104,13 +102,5 @@ extension TagSubView: Hashable {
     
     public static func == (lhs: Self, rhs: Self) -> Bool {
         return lhs.model.id == rhs.model.id
-    }
-}
-
-struct NoTapAnimationStyle: PrimitiveButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .contentShape(Rectangle())
-            .onTapGesture(perform: configuration.trigger)
     }
 }
