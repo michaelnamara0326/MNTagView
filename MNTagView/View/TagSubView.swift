@@ -54,7 +54,7 @@ public struct TagSubView: View {
                     }
                 }
             }
-            .padding(model.tagPadding)
+            .padding(model.tagPadding.swiftUIEdgeInsets)
             .background(getBackgroundColor())
             .overlay(
                 RoundedRectangle(cornerRadius: model.cornerRadius)

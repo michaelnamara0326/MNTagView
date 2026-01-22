@@ -21,7 +21,7 @@ public class TagViewModel: ObservableObject {
     @Published public var textColor: UIColor = .red
     @Published public var borderWidth: CGFloat = 0
     @Published public var borderColor: [UIColor] = []
-    @Published public var tagPadding: EdgeInsets = .init(top: 4, leading: 4, bottom: 4, trailing: 4)
+    @Published public var tagPadding: MNEdgeInsets = .init(top: 4, leading: 4, bottom: 4, trailing: 4)
     @Published public var tagBackgroundColor: [UIColor] = []
     @Published public var selectedTextColor: UIColor = .white
     @Published public var selectedBackgroundColor: UIColor = .blue

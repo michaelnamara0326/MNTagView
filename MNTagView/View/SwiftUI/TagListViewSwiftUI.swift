@@ -9,7 +9,10 @@ import SwiftUI
 
 public struct TagListViewSwiftUI: View, TagListViewProtocol {
     @ObservedObject public var model = TagListViewModel()
-    @State var needTrim: Bool = false
+    
+    // Binding support
+    private var tagsBinding: Binding<[String]>?
+    private var selectedBinding: Binding<Set<String>>?
     
     public init() {}
     
@@ -21,50 +24,224 @@ public struct TagListViewSwiftUI: View, TagListViewProtocol {
         addTags(titles: titles)
     }
     
-    public var body: some View {
-        switch model.scrollAxis {
-        case .vertical:
-            Group {
-                if model.limitScrollHeight != .zero {
-                    if needTrim {
-                        ScrollView(.vertical, showsIndicators: model.showScrollIndicator, content: getFlexibleView)
-                            .frame(maxHeight: model.limitScrollHeight)
-                    } else {
-                        getFlexibleView()
-                    }
-                } else {
-                    ScrollView(.vertical, showsIndicators: model.showScrollIndicator, content: getFlexibleView)
-                        .fixedSize(horizontal: false, vertical: true)
-                }
+    /// SwiftUI Idiomatic Init: Auto-syncs with external string array
+    public init(tags: Binding<[String]>) {
+        self.tagsBinding = tags
+        
+        // Default remove handler for binding
+        self.model.onRemoveButtonPressed = { [tags] tagView in
+            if let index = tags.wrappedValue.firstIndex(of: tagView.model.title) {
+                tags.wrappedValue.remove(at: index)
             }
-            
-        case .horizontal:
-            ScrollView(.horizontal, showsIndicators: model.showScrollIndicator, content: getFlexibleView)
-            
-        case .none:
-            getFlexibleView()
+        }
+        
+        // Initialize tags using helper to ensure all props (including the handler we just set) are applied
+        self.model.tags = tags.wrappedValue.map { title in
+            self.model.createTag(title: title)
         }
     }
     
-    private func getFlexibleView() -> some View {
-        FlexibleView(
-            data: model.tags,
-            spacing: model.spacing,
-            alignment: model.alignment,
-            axis: model.scrollAxis,
-            totalOfRow: $model.totalOfRow) { tagView in
+    public init(config: MNTagConfig) {
+        model.setConfig(config)
+    }
+    
+    public var body: some View {
+        Group {
+            switch model.scrollAxis {
+            case .vertical:
+                if model.limitScrollHeight != .zero {
+                    ScrollView(.vertical, showsIndicators: model.showScrollIndicator) {
+                        verticalContent
+                    }
+                    .frame(maxHeight: model.limitScrollHeight)
+                } else {
+                    ScrollView(.vertical, showsIndicators: model.showScrollIndicator) {
+                        verticalContent
+                    }
+                }
+                
+            case .horizontal:
+                ScrollView(.horizontal, showsIndicators: model.showScrollIndicator) {
+                    horizontalContent
+                }
+                
+            case .none:
+                verticalContent
+            }
+        }
+        .onChange(of: tagsBinding?.wrappedValue) { newTags in
+            if let newTags = newTags {
+                updateTagsFromBinding(newTags)
+            }
+        }
+    }
+    
+    private func updateTagsFromBinding(_ newTags: [String]) {
+        // However, we must preserve selection state if we recreate.
+        let oldSelection = Set(model.tags.filter { $0.model.isSelected }.map { $0.model.title })
+        
+        let newViews = newTags.map { title -> TagSubView in
+            // Try to find existing model to preserve state
+            if let existing = model.tags.first(where: { $0.model.title == title }) {
+                return existing
+            }
+            let newTag = model.createTag(title: title)
+            // Restore selection if it was selected and persists
+            if oldSelection.contains(title) {
+                newTag.model.isSelected = true
+            }
+            return newTag
+        }
+        model.tags = newViews
+    }
+    
+    private var verticalContent: some View {
+        TagLayout(alignment: model.alignment, spacing: model.spacing) {
+            ForEach(model.tags, id: \.self) { tagView in
                 tagView
             }
-            .padding(model.viewPadding)
-            .readSize { size in
-                needTrim = size.height > model.limitScrollHeight
-                model.onContentSizeChange?(size)
+        }
+        .padding(model.viewPadding.swiftUIEdgeInsets)
+        .background(
+            GeometryReader { proxy in
+                Color.clear
+                    .onAppear {
+                        model.onContentSizeChange?(proxy.size)
+                    }
+                    .onChange(of: proxy.size) { newSize in
+                        model.onContentSizeChange?(newSize)
+                    }
             }
-            .ignoresSafeArea()
+        )
+    }
+    
+    private var horizontalContent: some View {
+        HStack(spacing: model.spacing) {
+            ForEach(model.tags, id: \.self) { tagView in
+                tagView
+            }
+        }
+        .padding(model.viewPadding.swiftUIEdgeInsets)
+        .background(
+            GeometryReader { proxy in
+                Color.clear
+                    .onAppear {
+                        model.onContentSizeChange?(proxy.size)
+                    }
+                    .onChange(of: proxy.size) { newSize in
+                        model.onContentSizeChange?(newSize)
+                    }
+            }
+        )
     }
 }
 
+// MARK: - Modern API
 extension TagListViewSwiftUI {
+    
+    /// Apply a complete configuration object
+    public func setConfig(_ config: MNTagConfig) -> Self {
+        model.setConfig(config)
+        return self
+    }
+    
+    public func scrollAxis(_ axis: TagListScrollAxis) -> Self {
+        model.scrollAxis = axis
+        return self
+    }
+    
+    public func spacing(_ spacing: CGFloat) -> Self {
+        model.spacing = spacing
+        return self
+    }
+    
+    public func alignment(_ alignment: HorizontalAlignment) -> Self {
+        model.alignment = alignment
+        return self
+    }
+    
+    /// Unified Padding Modifier
+    public func viewPadding(_ padding: MNEdgeInsets) -> Self {
+        model.viewPadding = padding
+        return self
+    }
+    
+    public func showScrollIndicator(_ show: Bool) -> Self {
+        model.showScrollIndicator = show
+        return self
+    }
+    
+    public func maxHeight(_ height: CGFloat) -> Self {
+        model.limitScrollHeight = height
+        return self
+    }
+    
+    // Callbacks
+    public func onTagPressed(perform action: @escaping (TagSubView) -> Void) -> Self {
+        model.onTagPressed = action
+        return self
+    }
+    
+    // Simplified callback for String binding users
+    public func onTagPressed(perform action: @escaping (String) -> Void) -> Self {
+        model.onTagPressed = { tagView in
+            action(tagView.model.title)
+        }
+        return self
+    }
+    
+    public func onRemoveTag(perform action: @escaping (TagSubView) -> Void) -> Self {
+        model.onRemoveButtonPressed = { tagView in
+            action(tagView)
+            // If using binding, we should also try to update the binding
+            if let index = self.tagsBinding?.wrappedValue.firstIndex(of: tagView.model.title) {
+                self.tagsBinding?.wrappedValue.remove(at: index)
+            }
+        }
+        return self
+    }
+    
+    public func onContentSizeChange(perform action: @escaping (CGSize) -> Void) -> Self {
+        model.onContentSizeChange = action
+        return self
+    }
+    
+    // MARK: - Styling Modifiers
+    public func tagCornerRadius(_ radius: CGFloat) -> Self {
+        model.cornerRadius = radius
+        return self
+    }
+    
+    public func tagTextColor(_ color: Color) -> Self {
+        model.textColor = UIColor(color)
+        return self
+    }
+    
+    public func tagBackgroundColor(_ color: Color) -> Self {
+        model.tagBackgroundColor = [UIColor(color)]
+        return self
+    }
+    
+    public func tagSelectedBackgroundColor(_ color: Color) -> Self {
+        model.selectedBackgroundColor = UIColor(color)
+        return self
+    }
+    
+    /// Unified Padding Modifier
+    public func tagPadding(_ padding: MNEdgeInsets) -> Self {
+        model.tagPadding = padding
+        return self
+    }
+    
+    public func tagRemoveButtonEnable(_ enable: Bool) -> Self {
+        model.removeButtonEnable = enable
+        return self
+    }
+}
+
+// MARK: - Deprecated / Legacy API
+extension TagListViewSwiftUI {
+    @available(*, deprecated, message: "Use setConfig() or individual modifiers like .scrollAxis(), .spacing() instead.")
     public func options(scrollAxis: TagListScrollAxis = .none,
                         textFontName: String = "",
                         textSize: CGFloat = 12,
@@ -85,41 +262,33 @@ extension TagListViewSwiftUI {
                         removeButtonIconColor: Color = .red,
                         showScrollIndicator: Bool = false,
                         maxHeight: CGFloat = .zero) -> Self {
+        
+        var config = MNTagConfig()
+        config.textFontName = textFontName
+        config.textSize = textSize
+        config.textColor = UIColor(textColor)
+        config.tagBackgroundColor = [UIColor(tagBackgroundColor)]
+        config.selectedTextColor = UIColor(selectedTextColor)
+        config.selectedBorderColor = UIColor(selectedBorderColor)
+        config.selectedBackgroundColor = UIColor(selectedBackgroundColor)
+        config.cornerRadius = cornerRadius
+        config.tagPadding = MNEdgeInsets(tagPadding)
+        config.borderWidth = borderWidth
+        config.borderColor = [UIColor(bordercolor)]
+        config.removeButtonEnable = removeButtonEnable
+        config.removeButtonIconSize = removeButtonIconSize
+        config.removeButtonIconColor = UIColor(removeButtonIconColor)
+        
+        model.setConfig(config)
+        
+        // These are not in MNTagConfig yet (layout props)
         model.scrollAxis = scrollAxis
-        model.textFontName = textFontName
-        model.textSize = textSize
-        model.textColor = UIColor(textColor)
         model.spacing = spacing
         model.alignment = alignment
-        model.tagBackgroundColor = [UIColor(tagBackgroundColor)]
-        model.selectedTextColor = UIColor(selectedTextColor)
-        model.selectedBorderColor = UIColor(selectedBorderColor)
-        model.selectedBackgroundColor = UIColor(selectedBackgroundColor)
-        model.cornerRadius = cornerRadius
-        model.viewPadding = viewPadding
-        model.tagPadding = tagPadding
-        model.borderWidth = borderWidth
-        model.borderColor = [UIColor(bordercolor)]
-        model.removeButtonEnable = removeButtonEnable
-        model.removeButtonIconSize = removeButtonIconSize
-        model.removeButtonIconColor = UIColor(removeButtonIconColor)
+        model.viewPadding = MNEdgeInsets(viewPadding)
         model.showScrollIndicator = showScrollIndicator
         model.limitScrollHeight = maxHeight
-        return self
-    }
-    
-    public func pressedTag(action: @escaping (TagSubView) -> Void) -> Self {
-        model.onTagPressed = action
-        return self
-    }
-    
-    public func removeTag(action: @escaping (TagSubView) -> Void) -> Self {
-        model.onRemoveButtonPressed = action
-        return self
-    }
-    
-    public func onContentSizeChange(action: @escaping (CGSize) -> Void) -> Self {
-        model.onContentSizeChange = action
+        
         return self
     }
 }
