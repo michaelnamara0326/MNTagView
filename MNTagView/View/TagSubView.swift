@@ -19,8 +19,8 @@ public struct TagSubView: View {
         self.model = model
     }
     
-    public init(title: String, isSelected: Bool = false, customData: Any? = nil) {
-        self.model = TagViewModel(title: title, isSelected: isSelected, customData: customData)
+    public init(title: String, isSelected: Bool = false, metaData: Any? = nil) {
+        self.model = TagViewModel(title: title, isSelected: isSelected, metaData: metaData)
     }
     
     public var body: some View {
@@ -71,6 +71,9 @@ public struct TagSubView: View {
     }
     
     private func pressedTag() {
+        // Business Logic: If remove button is enabled (Edit Mode), selection is disabled.
+        guard !model.removeButtonEnable else { return }
+        
         if let delegate = model.delegate { // for UIKit
             delegate.tagPressed(self)
         } else if let tagPressed = model.onTagPressed { // for SwiftUI

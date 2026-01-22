@@ -36,7 +36,7 @@ extension TagListViewProtocol {
     
     public func addTags(titles: [String]) {
         titles.forEach {
-            return addTag(title: $0)
+            addTag(title: $0)
         }
     }
     

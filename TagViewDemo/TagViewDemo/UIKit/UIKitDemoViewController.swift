@@ -117,7 +117,7 @@ class UIKitDemoViewController: UIViewController {
         
         // Initial Config defaults
         currentConfig.cornerRadius = 12
-        currentConfig.tagBackgroundColor = [.systemBlue]
+        currentConfig.tagBackgroundColor = .systemBlue
         currentConfig.textColor = .white
         currentConfig.selectedBackgroundColor = .systemOrange
         currentConfig.tagPadding = .init(8)

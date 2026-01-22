@@ -1,6 +1,6 @@
 # MNTagView
 
-[English](README.md) | [中文](README_TW.md)
+[English](README.md) | [繁體中文](README_TW.md)
 
 **MNTagView** is a modern Tag View framework built on the power of SwiftUI, designed specifically for **iOS 17+**. It leverages the latest Layout protocol to deliver high-performance flow layouts while providing a highly unified and easy-to-use API for both SwiftUI and UIKit.
 
@@ -12,12 +12,14 @@
     *   **UIKit**: Provides a complete property facade, making it feel just like a native `UIView`.
 *   **🎨 Highly Customizable**:
     *   Customizable corner radius, borders, font size, and font name.
-    *   Supports solid background colors and gradients.
+    *   Supports single background colors and text colors.
     *   Flexible padding configuration using `MNEdgeInsets` for cross-platform compatibility.
 *   **🛠 Flexible Layout**:
     *   Supports **Vertical**, **Horizontal** scrolling, or **None** (auto-expanding).
     *   Supports **Leading**, **Center**, and **Trailing** alignment.
 *   **👆 Interactive**: Built-in support for tap selection and remove buttons.
+    *   **Business Logic**: When the remove button is enabled (Edit Mode), the tap selection is automatically disabled to allow users to focus on editing.
+*   **💾 Custom Data Support**: Each tag can carry extra information (Metadata) using the `metaData` property with type-safe generic accessors.
 
 ## 📦 Installation
 
@@ -59,6 +61,7 @@ struct ContentView: View {
             
             // 3. Interactions
             .onTagPressed { tag in
+                // This won't trigger if .tagRemoveButtonEnable(true)
                 print("Pressed: \(tag.model.title)")
                 tag.model.isSelected.toggle()
             }
@@ -104,7 +107,7 @@ class ViewController: UIViewController {
         // Cross-platform padding
         tagView.tagPadding = MNEdgeInsets(horizontal: 12, vertical: 6)
         
-        // Enable Remove Button
+        // Enable Remove Button (tagPressed delegate will be disabled)
         tagView.isRemoveButtonEnabled = true
     }
 }
@@ -132,7 +135,7 @@ var config = MNTagConfig()
 config.cornerRadius = 20
 config.textSize = 14
 config.textColor = .white
-config.tagBackgroundColor = [.systemPurple]
+config.tagBackgroundColor = .systemPurple
 config.tagPadding = MNEdgeInsets(10) // Unified padding
 
 // SwiftUI
@@ -156,6 +159,20 @@ let insets = MNEdgeInsets(horizontal: 16, vertical: 8)
 
 // Custom
 let insets = MNEdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10)
+```
+
+## 💾 Custom Data (Metadata)
+
+Each tag can carry custom metadata. You can retrieve it in a type-safe way using the `.data<T>()` method:
+
+```swift
+// 1. Set custom data (can be any type)
+let tag = TagSubView(title: "Apple", metaData: Product(id: 99, price: 50))
+
+// 2. Retrieve data type-safely
+if let product: Product = tag.model.data() {
+    print("Product ID: \(product.id)")
+}
 ```
 
 ## 📱 Demo App

@@ -1,6 +1,6 @@
 # MNTagView
 
-[English](README.md) | [中文](README_CN.md)
+[English](README.md) | [繁體中文](README_TW.md)
 
 **MNTagView** 是一個基於 SwiftUI 強大功能構建的現代化標籤列表 (Tag View) 套件，專為 iOS 17+ 設計。它利用了最新的 Layout 協議來提供高效能的自動換行佈局，同時為 SwiftUI 和 UIKit 提供了高度統一且易於使用的 API。
 
@@ -12,12 +12,14 @@
     *   **UIKit**: 提供完整的屬性封裝 (Facade)，使用起來就像原生的 `UIView`。
 *   **🎨 高度可客製化**:
     *   支援自定義圓角、邊框、文字大小、字型。
-    *   支援背景顏色與漸層。
+    *   支援單色背景、文字顏色。
     *   提供靈活的內距設定 (`MNEdgeInsets`)，跨平台無縫轉換。
 *   **🛠 靈活的佈局**:
     *   支援 **垂直 (Vertical)**、**水平 (Horizontal)** 滾動或 **不滾動 (None)** 自動延展。
     *   支援 **靠左 (Leading)**、**置中 (Center)**、**靠右 (Trailing)** 對齊。
 *   **👆 互動功能**: 內建點擊選取與刪除按鈕功能。
+    *   **商務邏輯**: 當開啟刪除按鈕（編輯模式）時，點擊選取功能會自動停用，確保使用者專注於編輯。
+*   **💾 自定義資料支援**: 每個標籤都可以透過 `metaData` 屬性攜帶額外資訊（Metadata），並提供型別安全的泛型存取方法。
 
 ## 📦 安裝
 
@@ -59,12 +61,13 @@ struct ContentView: View {
             
             // 3. 互動事件
             .onTagPressed { tag in
+                // 當 .tagRemoveButtonEnable(true) 時，此處不會觸發
                 print("點擊了: \(tag.model.title)")
                 tag.model.isSelected.toggle()
             }
             .onRemoveTag { tag in
                 // 使用 Binding 初始化時，資料會自動從 tags 陣列移除
-                print("移除了: \(tag.model.title)")
+                print("移為了: \(tag.model.title)")
             }
     }
 }
@@ -104,7 +107,7 @@ class ViewController: UIViewController {
         // 跨平台內距設定
         tagView.tagPadding = MNEdgeInsets(horizontal: 12, vertical: 6)
         
-        // 啟用刪除按鈕
+        // 啟用刪除按鈕 (此時 tagPressed 委派不會觸發)
         tagView.isRemoveButtonEnabled = true
     }
 }
@@ -132,7 +135,7 @@ var config = MNTagConfig()
 config.cornerRadius = 20
 config.textSize = 14
 config.textColor = .white
-config.tagBackgroundColor = [.systemPurple]
+config.tagBackgroundColor = .systemPurple
 config.tagPadding = MNEdgeInsets(10) // 統一內距
 
 // SwiftUI
@@ -156,6 +159,20 @@ let insets = MNEdgeInsets(horizontal: 16, vertical: 8)
 
 // 自定義四邊
 let insets = MNEdgeInsets(top: 5, leading: 10, bottom: 5, trailing: 10)
+```
+
+## 💾 自定義資料 (Metadata)
+
+每個標籤都可以攜帶自定義的元數據（Metadata），你可以使用 `.data<T>()` 方法以型別安全的方式取回：
+
+```swift
+// 1. 設定自定義資料 (可以是任何型別)
+let tag = TagSubView(title: "Apple", metaData: Product(id: 99, price: 50))
+
+// 2. 以型別安全的方式取回
+if let product: Product = tag.model.data() {
+    print("產品 ID: \(product.id)")
+}
 ```
 
 ## 📱 Demo 範例

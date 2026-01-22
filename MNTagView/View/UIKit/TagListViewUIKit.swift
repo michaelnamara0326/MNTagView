@@ -108,8 +108,8 @@ public class TagListViewUIKit: UIView, TagListViewProtocol {
     }
     
     public var tagBackgroundColor: UIColor {
-        get { model.tagBackgroundColor.first ?? .clear }
-        set { model.tagBackgroundColor = [newValue] }
+        get { model.tagBackgroundColor }
+        set { model.tagBackgroundColor = newValue }
     }
     
     public var selectedBackgroundColor: UIColor {
@@ -128,8 +128,8 @@ public class TagListViewUIKit: UIView, TagListViewProtocol {
     }
     
     public var borderColor: UIColor {
-        get { model.borderColor.first ?? .clear }
-        set { model.borderColor = [newValue] }
+        get { model.borderColor }
+        set { model.borderColor = newValue }
     }
     
     public var tagPadding: MNEdgeInsets {

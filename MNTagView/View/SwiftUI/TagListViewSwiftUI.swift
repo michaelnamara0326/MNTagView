@@ -218,7 +218,7 @@ extension TagListViewSwiftUI {
     }
     
     public func tagBackgroundColor(_ color: Color) -> Self {
-        model.tagBackgroundColor = [UIColor(color)]
+        model.tagBackgroundColor = UIColor(color)
         return self
     }
     
@@ -256,7 +256,7 @@ extension TagListViewSwiftUI {
                         viewPadding: EdgeInsets = .init(top: 0, leading: 0, bottom: 0, trailing: 0),
                         tagPadding: EdgeInsets = .init(top: 4, leading: 4, bottom: 4, trailing: 4),
                         borderWidth: CGFloat = 0,
-                        bordercolor: Color = .clear,
+                        borderColor: Color = .clear,
                         removeButtonEnable: Bool = false,
                         removeButtonIconSize: CGSize = CGSize(width: 10, height: 10),
                         removeButtonIconColor: Color = .red,
@@ -267,14 +267,14 @@ extension TagListViewSwiftUI {
         config.textFontName = textFontName
         config.textSize = textSize
         config.textColor = UIColor(textColor)
-        config.tagBackgroundColor = [UIColor(tagBackgroundColor)]
+        config.tagBackgroundColor = UIColor(tagBackgroundColor)
         config.selectedTextColor = UIColor(selectedTextColor)
         config.selectedBorderColor = UIColor(selectedBorderColor)
         config.selectedBackgroundColor = UIColor(selectedBackgroundColor)
         config.cornerRadius = cornerRadius
         config.tagPadding = MNEdgeInsets(tagPadding)
         config.borderWidth = borderWidth
-        config.borderColor = [UIColor(bordercolor)]
+        config.borderColor = UIColor(borderColor)
         config.removeButtonEnable = removeButtonEnable
         config.removeButtonIconSize = removeButtonIconSize
         config.removeButtonIconColor = UIColor(removeButtonIconColor)

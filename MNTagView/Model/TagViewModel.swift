@@ -16,7 +16,7 @@ public class TagViewModel: ObservableObject {
     public var onRemoveButtonPressed: ((TagSubView) -> Void)?
     
     // Stored as Any to maintain non-generic class hierarchy for UIKit compatibility
-    public let customData: Any? 
+    public let metaData: Any? // if tag need store any data can use this param 
     
     @Published public var title: String
     @Published public var isSelected: Bool = false
@@ -38,22 +38,22 @@ public class TagViewModel: ObservableObject {
     @Published public var customImageSize: CGSize = .zero
     
     /// Initialize with optional custom data of any type.
-    public init<T>(title: String, isSelected: Bool = false, customData: T? = nil) {
+    public init<T>(title: String, isSelected: Bool = false, metaData: T? = nil) {
         self.title = title
         self.isSelected = isSelected
-        self.customData = customData
+        self.metaData = metaData
     }
     
     // Non-generic init for convenience (equivalent to T=Any)
     public init(title: String, isSelected: Bool = false) {
         self.title = title
         self.isSelected = isSelected
-        self.customData = nil
+        self.metaData = nil
     }
     
     /// Type-safe accessor for custom data.
     /// Returns nil if data is nil or cannot be cast to type T.
     public func data<T>() -> T? {
-        return customData as? T
+        return metaData as? T
     }
 }

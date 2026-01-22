@@ -74,7 +74,7 @@ public class TagListViewModel: ObservableObject {
         didSet { if !isBatchUpdating { tags.forEach { $0.model.textSize = textSize } } }
     }
     
-    @Published public var tagBackgroundColor: [UIColor] = [] {
+    @Published public var tagBackgroundColor: UIColor = .gray {
         didSet { if !isBatchUpdating { tags.forEach { $0.model.tagBackgroundColor = tagBackgroundColor } } }
     }
     
@@ -102,7 +102,7 @@ public class TagListViewModel: ObservableObject {
         didSet { if !isBatchUpdating { tags.forEach { $0.model.borderWidth = borderWidth } } }
     }
     
-    @Published public var borderColor: [UIColor] = [] {
+    @Published public var borderColor: UIColor = .clear {
         didSet { if !isBatchUpdating { tags.forEach { $0.model.borderColor = borderColor } } }
     }
     
