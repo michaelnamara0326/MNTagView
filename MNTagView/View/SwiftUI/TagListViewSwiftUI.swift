@@ -77,21 +77,21 @@ public struct TagListViewSwiftUI: View, TagListViewProtocol {
     }
     
     private func updateTagsFromBinding(_ newTags: [String]) {
-        // However, we must preserve selection state if we recreate.
-        let oldSelection = Set(model.tags.filter { $0.model.isSelected }.map { $0.model.title })
+        // Group existing tags by title to handle duplicates correctly
+        var existingTagsMap = Dictionary(grouping: model.tags) { $0.model.title }
         
         let newViews = newTags.map { title -> TagSubView in
-            // Try to find existing model to preserve state
-            if let existing = model.tags.first(where: { $0.model.title == title }) {
-                return existing
+            // Try to pop an existing tag with the same title to reuse it (preserving its state)
+            if var tags = existingTagsMap[title], !tags.isEmpty {
+                let reusedTag = tags.removeFirst()
+                existingTagsMap[title] = tags // Update map with remaining tags
+                return reusedTag
             }
-            let newTag = model.createTag(title: title)
-            // Restore selection if it was selected and persists
-            if oldSelection.contains(title) {
-                newTag.model.isSelected = true
-            }
-            return newTag
+            
+            // If no existing tag available, create a new one
+            return model.createTag(title: title)
         }
+        
         model.tags = newViews
     }
     
