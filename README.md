@@ -4,6 +4,18 @@
 
 **MNTagView** is a modern Tag View framework built on the power of SwiftUI, designed specifically for **iOS 17+**. It leverages the latest Layout protocol to deliver high-performance flow layouts while providing a highly unified and easy-to-use API for both SwiftUI and UIKit.
 
+## 💡 Design Philosophy
+
+You might wonder: *"Why use this package instead of just using a custom `TagLayout` in SwiftUI?"*
+
+While creating a simple flow layout in SwiftUI is possible, `MNTagView` is designed as a complete **solution** rather than just a layout tool. It saves you time by handling common but tedious tasks out of the box:
+
+1.  **Drop-in Ready**: No need to build your own tag views. It comes with built-in styling for borders, backgrounds, and corner radiuses.
+2.  **State Management**: It handles selection states and "Edit Mode" (remove buttons) logic for you.
+3.  **Unified API**: The most significant advantage is for teams maintaining hybrid codebases. It provides a consistent configuration experience across both **SwiftUI** and **UIKit**, allowing you to share the same design logic without rewriting view controllers.
+
+If you need a quick, reliable, and cross-platform tag list without reinventing the wheel, `MNTagView` is for you.
+
 ## ✨ Features
 
 *   **⚡️ Built for iOS 17+**: Utilizes SwiftUI's modern `Layout` protocol for superior performance and stable flow layouts.

@@ -32,8 +32,7 @@ public class TagViewModel: ObservableObject {
     @Published public var removeButtonEnable: Bool = false
     @Published public var removeButtonIconSize: CGSize = CGSize(width: 10, height: 10)
     @Published public var removeButtonIconColor: UIColor = .red
-    @Published public var textFontName: String = ""
-    @Published public var textSize: CGFloat = 12
+    @Published public var font: MNFont = .system(size: 12)
     @Published public var customImage: UIImage? = nil
     @Published public var customImageSize: CGSize = .zero
     

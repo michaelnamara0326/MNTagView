@@ -152,7 +152,7 @@ class UIKitDemoViewController: UIViewController {
                 self?.updateTagView()
             }
             self.addSlider(to: stack, title: "Text Size", min: 8, max: 24, value: 12) { [weak self] val in
-                self?.currentConfig.textSize = CGFloat(val)
+                self?.currentConfig.font = .system(size: CGFloat(val))
                 self?.updateTagView()
             }
             self.addSlider(to: stack, title: "Padding", min: 0, max: 20, value: 8) { [weak self] val in

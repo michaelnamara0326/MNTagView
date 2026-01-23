@@ -137,14 +137,9 @@ public class TagListViewUIKit: UIView, TagListViewProtocol {
         set { model.tagPadding = newValue }
     }
     
-    public var textFontName: String {
-        get { model.textFontName }
-        set { model.textFontName = newValue }
-    }
-    
-    public var textSize: CGFloat {
-        get { model.textSize }
-        set { model.textSize = newValue }
+    public var font: MNFont {
+        get { model.font }
+        set { model.font = newValue }
     }
     
     // MARK: - Behavior

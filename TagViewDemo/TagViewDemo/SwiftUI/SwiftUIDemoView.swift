@@ -73,7 +73,7 @@ struct SwiftUIDemoView: View {
                                     $0.cornerRadius = tagCornerRadius
                                     $0.tagBackgroundColor = UIColor(tagBackgroundColor)
                                     $0.textColor = UIColor(tagTextColor)
-                                    $0.textSize = tagTextSize
+                                    $0.font = .system(size: tagTextSize)
                                     $0.tagPadding = MNEdgeInsets(top: tagPaddingVertical, leading: tagPaddingHorizontal, bottom: tagPaddingVertical, trailing: tagPaddingHorizontal)
                                     
                                     $0.borderWidth = borderWidth

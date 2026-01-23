@@ -42,7 +42,7 @@ public struct TagSubView: View {
                 }
                 
                 Text(model.title)
-                    .font(.custom(model.textFontName, size: model.textSize))
+                    .font(model.font.swiftUIFont)
                     .foregroundColor(model.isSelected ? Color(model.selectedTextColor) : Color(model.textColor))
             }
             .contentShape(Rectangle())

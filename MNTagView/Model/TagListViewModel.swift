@@ -74,12 +74,8 @@ public class TagListViewModel: ObservableObject {
         didSet { if !isBatchUpdating { tags.forEach { $0.model.textColor = textColor } } }
     }
     
-    @Published public var textFontName: String = "" {
-        didSet { if !isBatchUpdating { tags.forEach { $0.model.textFontName = textFontName } } }
-    }
-    
-    @Published public var textSize: CGFloat = 12 {
-        didSet { if !isBatchUpdating { tags.forEach { $0.model.textSize = textSize } } }
+    @Published public var font: MNFont = .system(size: 12) {
+        didSet { if !isBatchUpdating { tags.forEach { $0.model.font = font } } }
     }
     
     @Published public var tagBackgroundColor: UIColor = .gray {
@@ -133,8 +129,7 @@ public class TagListViewModel: ObservableObject {
         
         self.cornerRadius = config.cornerRadius
         self.textColor = config.textColor
-        self.textFontName = config.textFontName
-        self.textSize = config.textSize
+        self.font = config.font
         self.tagPadding = config.tagPadding
         self.tagBackgroundColor = config.tagBackgroundColor
         self.selectedTextColor = config.selectedTextColor
@@ -170,8 +165,7 @@ public class TagListViewModel: ObservableObject {
         model.tagBackgroundColor = tagBackgroundColor
         model.selectedBackgroundColor = selectedBackgroundColor
         model.selectedBorderColor = selectedBorderColor
-        model.textFontName = textFontName
-        model.textSize = textSize
+        model.font = font
         model.removeButtonEnable = removeButtonEnable
         model.removeButtonIconSize = removeButtonIconSize
         model.removeButtonIconColor = removeButtonIconColor

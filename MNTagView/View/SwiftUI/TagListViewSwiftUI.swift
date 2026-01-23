@@ -217,6 +217,11 @@ extension TagListViewSwiftUI {
         return self
     }
     
+    public func tagFont(_ font: MNFont) -> Self {
+        model.font = font
+        return self
+    }
+    
     public func tagBackgroundColor(_ color: Color) -> Self {
         model.tagBackgroundColor = UIColor(color)
         return self
@@ -264,8 +269,11 @@ extension TagListViewSwiftUI {
                         maxHeight: CGFloat = .zero) -> Self {
         
         var config = MNTagConfig()
-        config.textFontName = textFontName
-        config.textSize = textSize
+        if textFontName.isEmpty {
+            config.font = .system(size: textSize)
+        } else {
+            config.font = MNFont(name: textFontName, size: textSize)
+        }
         config.textColor = UIColor(textColor)
         config.tagBackgroundColor = UIColor(tagBackgroundColor)
         config.selectedTextColor = UIColor(selectedTextColor)
