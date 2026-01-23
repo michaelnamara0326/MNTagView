@@ -62,45 +62,48 @@ struct SwiftUIDemoView: View {
                             .padding(.horizontal)
                             .padding(.top)
                         
-                        TagListViewSwiftUI(tags: $tags)
-                            .scrollAxis(scrollAxis)
-                            .alignment(alignmentOption)
-                            .spacing(spacing)
-                            .viewPadding(top: viewPadding, leading: viewPadding, bottom: viewPadding, trailing: viewPadding)
-                            // Unified Config
-                            .setConfig(MNTagConfig()
-                                .updated {
-                                    $0.cornerRadius = tagCornerRadius
-                                    $0.tagBackgroundColor = UIColor(tagBackgroundColor)
-                                    $0.textColor = UIColor(tagTextColor)
-                                    $0.font = .system(size: tagTextSize)
-                                    $0.tagPadding = MNEdgeInsets(top: tagPaddingVertical, leading: tagPaddingHorizontal, bottom: tagPaddingVertical, trailing: tagPaddingHorizontal)
-                                    
-                                    $0.borderWidth = borderWidth
-                                    $0.borderColor = UIColor(borderColor)
-                                    
-                                    $0.selectedBackgroundColor = UIColor(selectedColor)
-                                    $0.selectedTextColor = UIColor(selectedTextColor)
-                                    $0.selectedBorderColor = UIColor(selectedBorderColor)
-                                    
-                                    $0.removeButtonEnable = isRemoveEnabled
-                                    $0.removeButtonIconColor = UIColor(removeIconColor)
-                                    $0.removeButtonIconSize = CGSize(width: removeIconSize, height: removeIconSize)
-                                }
-                            )
-                            .onTagPressed { tag in
-                                tag.model.isSelected.toggle()
+                        TagListViewSwiftUI(tags: $tags, onTap: { tag in
+                            // Handle Tap
+                            tag.model.isSelected.toggle()
+                        }, onRemove: { tag in
+                            // Custom remove action if needed (data sync handled automatically by binding)
+                            print("Removed: \(tag.model.title)")
+                        })
+                        .scrollAxis(scrollAxis)
+                        .alignment(alignmentOption)
+                        .spacing(spacing)
+                        .viewPadding(top: viewPadding, leading: viewPadding, bottom: viewPadding, trailing: viewPadding)
+                        // Unified Config
+                        .setConfig(MNTagConfig()
+                            .updated {
+                                $0.cornerRadius = tagCornerRadius
+                                $0.tagBackgroundColor = UIColor(tagBackgroundColor)
+                                $0.textColor = UIColor(tagTextColor)
+                                $0.font = .system(size: tagTextSize)
+                                $0.tagPadding = MNEdgeInsets(top: tagPaddingVertical, leading: tagPaddingHorizontal, bottom: tagPaddingVertical, trailing: tagPaddingHorizontal)
+                                
+                                $0.borderWidth = borderWidth
+                                $0.borderColor = UIColor(borderColor)
+                                
+                                $0.selectedBackgroundColor = UIColor(selectedColor)
+                                $0.selectedTextColor = UIColor(selectedTextColor)
+                                $0.selectedBorderColor = UIColor(selectedBorderColor)
+                                
+                                $0.removeButtonEnable = isRemoveEnabled
+                                $0.removeButtonIconColor = UIColor(removeIconColor)
+                                $0.removeButtonIconSize = CGSize(width: removeIconSize, height: removeIconSize)
                             }
-                            .frame(minHeight: 150)
-                            .background(Color(.systemBackground)) // Solid background for pinning
-                            .cornerRadius(8)
-                            .overlay(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .stroke(Color.gray.opacity(0.2), lineWidth: 1)
-                            )
-                            .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 5)
-                            .padding(.horizontal)
-                            .padding(.bottom)
+                        )
+                        .frame(minHeight: 150)
+                        .background(Color(.systemBackground)) // Solid background for pinning
+                        .cornerRadius(8)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(Color.gray.opacity(0.2), lineWidth: 1)
+                        )
+                        .shadow(color: Color.black.opacity(0.05), radius: 5, x: 0, y: 5)
+                        .padding(.horizontal)
+                        .padding(.bottom)
                     }
                     .background(Color(.systemGroupedBackground).opacity(0.95)) // Translucent background for header
                     .shadow(color: Color.black.opacity(0.05), radius: 2, y: 1)

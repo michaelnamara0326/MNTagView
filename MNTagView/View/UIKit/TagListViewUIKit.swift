@@ -137,9 +137,9 @@ public class TagListViewUIKit: UIView, TagListViewProtocol {
         set { model.tagPadding = newValue }
     }
     
-    public var font: MNFont {
-        get { model.font }
-        set { model.font = newValue }
+    public var font: UIFont {
+        get { model.uiFont }
+        set { model.font = Font(font); model.uiFont = font }
     }
     
     // MARK: - Behavior

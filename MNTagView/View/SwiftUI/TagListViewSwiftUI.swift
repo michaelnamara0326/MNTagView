@@ -25,11 +25,20 @@ public struct TagListViewSwiftUI: View, TagListViewProtocol {
     }
     
     /// SwiftUI Idiomatic Init: Auto-syncs with external string array
-    public init(tags: Binding<[String]>) {
+    public init(tags: Binding<[String]>,
+                onTap: ((TagSubView) -> Void)? = nil,
+                onRemove: ((TagSubView) -> Void)? = nil) {
         self.tagsBinding = tags
         
-        // Default remove handler for binding
+        // Setup handlers
+        self.model.onTagPressed = onTap
+        
+        // Default remove handler for binding + custom action
         self.model.onRemoveButtonPressed = { [tags] tagView in
+            // Execute custom action if provided
+            onRemove?(tagView)
+            
+            // Default binding update logic
             if let index = tags.wrappedValue.firstIndex(of: tagView.model.title) {
                 tags.wrappedValue.remove(at: index)
             }
@@ -41,9 +50,7 @@ public struct TagListViewSwiftUI: View, TagListViewProtocol {
         }
     }
     
-    public init(config: MNTagConfig) {
-        model.setConfig(config)
-    }
+
     
     public var body: some View {
         Group {
@@ -176,31 +183,6 @@ extension TagListViewSwiftUI {
         return self
     }
     
-    // Callbacks
-    public func onTagPressed(perform action: @escaping (TagSubView) -> Void) -> Self {
-        model.onTagPressed = action
-        return self
-    }
-    
-    // Simplified callback for String binding users
-    public func onTagPressed(perform action: @escaping (String) -> Void) -> Self {
-        model.onTagPressed = { tagView in
-            action(tagView.model.title)
-        }
-        return self
-    }
-    
-    public func onRemoveTag(perform action: @escaping (TagSubView) -> Void) -> Self {
-        model.onRemoveButtonPressed = { tagView in
-            action(tagView)
-            // If using binding, we should also try to update the binding
-            if let index = self.tagsBinding?.wrappedValue.firstIndex(of: tagView.model.title) {
-                self.tagsBinding?.wrappedValue.remove(at: index)
-            }
-        }
-        return self
-    }
-    
     public func onContentSizeChange(perform action: @escaping (CGSize) -> Void) -> Self {
         model.onContentSizeChange = action
         return self
@@ -217,7 +199,7 @@ extension TagListViewSwiftUI {
         return self
     }
     
-    public func tagFont(_ font: MNFont) -> Self {
+    public func tagFont(_ font: Font) -> Self {
         model.font = font
         return self
     }

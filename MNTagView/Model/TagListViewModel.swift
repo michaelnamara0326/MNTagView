@@ -55,6 +55,8 @@ public class TagListViewModel: ObservableObject {
     
     var onContentSizeChange: ((CGSize) -> Void)?
     
+    var uiFont: UIFont = .systemFont(ofSize: 12) // for uikit access only
+    
     @Published public var limitScrollHeight: CGFloat = .zero
     
     // MARK: - Property
@@ -74,7 +76,7 @@ public class TagListViewModel: ObservableObject {
         didSet { if !isBatchUpdating { tags.forEach { $0.model.textColor = textColor } } }
     }
     
-    @Published public var font: MNFont = .system(size: 12) {
+    @Published public var font: Font = .system(size: 12) {
         didSet { if !isBatchUpdating { tags.forEach { $0.model.font = font } } }
     }
     
