@@ -35,6 +35,7 @@ public struct TagSubView: View {
                 }
                 
                 Text(model.title)
+                    .lineLimit(1)
                     .font(model.font)
                     .foregroundColor(model.isSelected ? Color(model.selectedTextColor) : Color(model.textColor))
             }

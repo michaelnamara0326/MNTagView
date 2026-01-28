@@ -71,6 +71,7 @@ public struct TagListViewSwiftUI: View, TagListViewProtocol {
                 ScrollView(.horizontal, showsIndicators: model.showScrollIndicator) {
                     horizontalContent
                 }
+                .scrollBounceBehavior(.basedOnSize, axes: .horizontal)
                 
             case .none:
                 verticalContent
