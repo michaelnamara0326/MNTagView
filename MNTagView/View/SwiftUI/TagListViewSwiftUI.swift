@@ -14,7 +14,7 @@ public struct TagListViewSwiftUI: View, TagListViewProtocol {
     private var tagsBinding: Binding<[String]>?
     private var selectedBinding: Binding<Set<String>>?
     
-    public init() {}
+    private init() {}
     
     public init(tags: [TagSubView]) {
         model.tags = tags
@@ -145,7 +145,6 @@ public struct TagListViewSwiftUI: View, TagListViewProtocol {
 
 // MARK: - Modern API
 extension TagListViewSwiftUI {
-    
     /// Apply a complete configuration object
     public func setConfig(_ config: MNTagConfig) -> Self {
         model.setConfig(config)
@@ -214,6 +213,18 @@ extension TagListViewSwiftUI {
         return self
     }
     
+    public func tagBorderColor(_ color: Color, width: CGFloat) -> Self {
+        model.borderColor = UIColor(color)
+        model.borderWidth = width
+        return self
+    }
+    
+    public func tagSelectedBorderColor(_ color: Color, width: CGFloat) -> Self {
+        model.selectedBorderColor = UIColor(color)
+        model.borderWidth = width
+        return self
+    }
+    
     /// Unified Padding Modifier
     public func tagPadding(_ padding: MNEdgeInsets) -> Self {
         model.tagPadding = padding
@@ -254,7 +265,7 @@ extension TagListViewSwiftUI {
         if textFontName.isEmpty {
             config.font = .system(size: textSize)
         } else {
-            config.font = MNFont(name: textFontName, size: textSize)
+            config.font = Font(UIFont(name: textFontName, size: textSize) ?? .systemFont(ofSize: textSize))
         }
         config.textColor = UIColor(textColor)
         config.tagBackgroundColor = UIColor(tagBackgroundColor)

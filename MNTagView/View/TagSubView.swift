@@ -24,13 +24,6 @@ public struct TagSubView: View {
     }
     
     public var body: some View {
-        tag
-    }
-    
-    @ViewBuilder
-    private var tag: some View {
-        let isEnabled = model.removeButtonEnable
-        
         HStack(spacing: 8) {
             // Tag Content (Image + Title)
             HStack(spacing: 4) {
@@ -42,14 +35,14 @@ public struct TagSubView: View {
                 }
                 
                 Text(model.title)
-                    .font(model.font.swiftUIFont)
+                    .font(model.font)
                     .foregroundColor(model.isSelected ? Color(model.selectedTextColor) : Color(model.textColor))
             }
             .contentShape(Rectangle())
             .onTapGesture(perform: pressedTag)
             
             // Remove Button
-            if isEnabled {
+            if model.removeButtonEnable {
                 Image(systemName: "xmark")
                     .resizable()
                     .aspectRatio(contentMode: .fit)

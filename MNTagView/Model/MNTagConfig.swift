@@ -11,7 +11,7 @@ import UIKit
 public struct MNTagConfig {
     public var cornerRadius: CGFloat = 0
     public var textColor: UIColor = .white
-    public var font: MNFont = .system(size: 12)
+    public var font: Font = .system(size: 12)
     public var tagPadding: MNEdgeInsets = .init(top: 4, leading: 4, bottom: 4, trailing: 4)
     public var tagBackgroundColor: UIColor = .gray
     

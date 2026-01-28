@@ -62,13 +62,17 @@ struct SwiftUIDemoView: View {
                             .padding(.horizontal)
                             .padding(.top)
                         
-                        TagListViewSwiftUI(tags: $tags, onTap: { tag in
-                            // Handle Tap
-                            tag.model.isSelected.toggle()
-                        }, onRemove: { tag in
-                            // Custom remove action if needed (data sync handled automatically by binding)
-                            print("Removed: \(tag.model.title)")
-                        })
+                        TagListViewSwiftUI(
+                            tags: $tags,
+                            onTap: { tag in
+                                // Handle Tap
+                                tag.model.isSelected.toggle()
+                            },
+                            onRemove: { tag in
+                                // Custom remove action if needed (data sync handled automatically by binding)
+                                print("Removed: \(tag.model.title)")
+                            }
+                        )
                         .scrollAxis(scrollAxis)
                         .alignment(alignmentOption)
                         .spacing(spacing)

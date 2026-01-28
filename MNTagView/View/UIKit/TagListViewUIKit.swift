@@ -12,7 +12,7 @@ import UIKit
 // MARK: - UIView Setup
 public class TagListViewUIKit: UIView, TagListViewProtocol {
     private var cancellables = Set<AnyCancellable>()
-    private let hostingController = UIHostingController(rootView: TagListViewSwiftUI())
+    private let hostingController = UIHostingController(rootView: TagListViewSwiftUI(tags: []))
     private var rootView: TagListViewSwiftUI { return hostingController.rootView }
     private var hostingView: UIView { return hostingController.view }
     

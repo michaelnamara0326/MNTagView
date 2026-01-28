@@ -35,7 +35,10 @@ extension TagListViewProtocol {
     }
     
     public func addTags(titles: [String]) {
-        titles.forEach {
+        let removeDuplicates = titles.reduce(into: [String]()) {
+            if !$0.contains($1) { $0.append($1) }
+        }
+        removeDuplicates.forEach {
             addTag(title: $0)
         }
     }
